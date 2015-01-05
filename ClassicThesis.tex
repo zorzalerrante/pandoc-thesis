@@ -102,8 +102,7 @@ $endif$
 % Triggers for this config
 % ******************************************************************** 
 \usepackage{ifthen}
-\newboolean{enable-backrefs} % enable backrefs in the bibliography
-\setboolean{enable-backrefs}{true} % true false
+
 % ****************************************************************************************************
 
 % ********************************************************************
@@ -152,15 +151,12 @@ $endif$
 \renewcommand{\bflabel}[1]{{#1}\hfill} % fix the list of acronyms
 {% endraw %}
  
-$if(natbib)$
-\usepackage{natbib}
-\bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}
-$endif$
-$if(biblatex)$
 \usepackage{biblatex}
-$if(biblio-files)$
-\bibliography{$biblio-files$}
-$endif$
+\bibliography{$bibfile$}
+$if(book-class)$
+\renewcommand\bibname{$bibtitle$}
+$else$
+\renewcommand\refname{$bibtitle$}
 $endif$
 % ****************************************************************************************************
 
@@ -206,9 +202,6 @@ $endif$
 % ****************************************************************************************************    		   
 
 
-% ****************************************************************************************************
-% 6. PDFLaTeX, hyperreferences and citation backreferences
-% ****************************************************************************************************
 % ********************************************************************
 % Using PDFLaTeX
 % ********************************************************************
@@ -228,32 +221,6 @@ $if(graphics)$
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 $endif$
-
-% ********************************************************************
-% Setup the style of the backrefs from the bibliography
-% (translate the options to any language you use)
-% ********************************************************************
-\newcommand{\backrefnotcitedstring}{\relax}%(Not cited.)
-\newcommand{\backrefcitedsinglestring}[1]{(Cited on page~#1.)}
-\newcommand{\backrefcitedmultistring}[1]{(Cited on pages~#1.)}
-\ifthenelse{\boolean{enable-backrefs}}%
-{
-{% raw %}
-		\PassOptionsToPackage{hyperpageref}{backref}
-		\usepackage{backref} % to be loaded after hyperref package 
-		   \renewcommand{\backreftwosep}{ and~} % separate 2 pages
-		   \renewcommand{\backreflastsep}{, and~} % separate last of longer list
-		   \renewcommand*{\backref}[1]{}  % disable standard
-		   \renewcommand*{\backrefalt}[4]{ % detailed backref
-		      \ifcase #1 %
-		         \backrefnotcitedstring%
-		      \or%
-		         \backrefcitedsinglestring{#2}%
-		      \else%
-		         \backrefcitedmultistring{#2}%
-		      \fi}%
-{% endraw %}
-}{\relax}    
 
 % ********************************************************************
 % Hyperreferences
@@ -443,38 +410,6 @@ $endfor$
 \cleardoublepage
 
 $body$
-
-$if(natbib)$
-$if(biblio-files)$
-$if(biblio-title)$
-$if(book-class)$
-\renewcommand\bibname{$biblio-title$}
-$else$
-\renewcommand\refname{$biblio-title$}
-$endif$
-$endif$
-\cleardoublepage
-\manualmark
-\markboth{\spacedlowsmallcaps{\bibname}}{\spacedlowsmallcaps{\bibname}} % work-around to have small caps also
-%\phantomsection 
-\refstepcounter{dummy}
-\addtocontents{toc}{\protect\vspace{\beforebibskip}} % to have the bib a bit from the rest in the toc
-\addcontentsline{toc}{chapter}{\tocEntry{\bibname}}
-\bibliography{$biblio-files$}
-
-$endif$
-$endif$
-$if(biblatex)$
-\cleardoublepage
-\manualmark
-\markboth{\spacedlowsmallcaps{\bibname}}{\spacedlowsmallcaps{\bibname}} % work-around to have small caps also
-%\phantomsection 
-\refstepcounter{dummy}
-\addtocontents{toc}{\protect\vspace{\beforebibskip}} % to have the bib a bit from the rest in the toc
-\addcontentsline{toc}{chapter}{\tocEntry{\bibname}}
-\printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
-
-$endif$
 
 $if(include-after)$
 \appendix

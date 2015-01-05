@@ -9,6 +9,7 @@ This is a small set of scripts/templates I prepared to start writing my PhD thes
   * [pandoc](http://johnmacfarlane.net/pandoc)
   * python with [jinja2](http://jinja.pocoo.org/) installed
   * the [classicthesis](http://www.ctan.org/tex-archive/macros/latex/contrib/classicthesis/) LaTeX package
+  * [Biber](http://biblatex-biber.sourceforge.net/) (or BibLaTeX)
   * a thesis to write :)
     
 ## How to
@@ -21,30 +22,33 @@ This is a small set of scripts/templates I prepared to start writing my PhD thes
 The Makefile contains the following code:
 
 ```
-pandoc *.md \
-  --include-before-body=frontback/dedication.tex \
-  --include-before-body=frontback/acknowledgements.tex \
-  --include-before-body=frontback/abstract.tex \
-  --include-after-body=appendix.tex \
-  --filter pandoc-citeproc --atx-headers --listings \
-  --latex-engine=pdflatex --template=thesis_skeleton.latex \
-  --bibliography=thesis.bib -V biblio-title='Bibliography' --natbib --csl=acm-sigchi-proceedings-extended-abstract-format.csl \
-  -V documentclass='scrbook' \
-  -V fontfamily='libertine' \
-  -V author='Eduardo Graells-Garrido' \
-  -V year='2015' \
-  -V department='DTIC' \
-  -V university='Universitat Pompeu Fabra' \
-  -V title='Biased Behavior on Web Activities: From Understanding to Unbiased Visual Exploration' \
-  -V supervisor='Dr. Ricardo Baeza-Yates, Universitat Pompeu Fabra \\ Dr. Mounia Lalmas, Yahoo Labs' \
-  -V university_logo='img/logo_upf.png' \
-  -f markdown -o thesis.pdf
+all: thesis_skeleton.latex appendix.tex
+    pandoc *.md ref-appendix/references.tex \
+	--include-before-body=frontback/dedication.tex \
+	--include-before-body=frontback/acknowledgements.tex \
+	--include-before-body=frontback/abstract.tex \
+	--include-after-body=ref-appendix/appendix.tex \
+	--atx-headers \
+	--latex-engine=pdflatex --template=thesis_skeleton.latex \
+	--bibliography=thesis.bib --csl=acm-sigchi-proceedings-extended-abstract-format.csl \
+	-V bibfile='thesis' \
+	-V bibtitle='Bibliography' \
+	-V documentclass='scrbook' \
+	-V fontfamily='libertine' \
+	-V author='Eduardo Graells-Garrido' \
+	-V year='2015' \
+	-V department='DTIC' \
+	-V university='Universitat Pompeu Fabra' \
+	-V title='Biased Behavior on Web Activities: From Understanding to Unbiased Visual Exploration' \
+	-V supervisor='Prof. Dr. Ricardo Baeza-Yates, Universitat Pompeu Fabra \\ Dr. Mounia Lalmas, Yahoo Labs' \
+	-V university_logo='img/logo_upf.png' \
+	-f markdown -o thesis.pdf
 ```
 
 ### Explanation
  
-As you can see, I have several .tex files in the folder `frontback`. The names of those files are self-describing. They need to be in LaTeX instead of Markdown because
-pandoc does not process them. The exception is the appendix.tex file: actually, you have an appendix.md file, which is converted previously by make to LaTeX.
+As you can see, I have several .tex files in the folders `frontback` and `ref-appendix`. The names of those folders are self-describing. They need to be in LaTeX instead of Markdown because
+pandoc does not process them. The exception is the `appendix.tex` file: actually, you have an appendix.md file, which is converted previously by pandoc to LaTeX.
 
 All chapters and parts of the thesis should be in .md files. I name them with numbers, like 01_introduction.md, 02_background.md, and thus I'm able to use a wildcard *.md to 
 read the files.
