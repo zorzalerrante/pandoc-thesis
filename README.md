@@ -6,17 +6,17 @@ This is a small set of scripts/templates I prepared to start writing my PhD thes
 
 ## Requirements / Credits
 
-    * [pandoc](http://johnmacfarlane.net/pandoc)
-    * python with [jinja2](http://jinja.pocoo.org/) installed
-    * the [classicthesis](http://www.ctan.org/tex-archive/macros/latex/contrib/classicthesis/) LaTeX package
-    * a thesis to write :)
+  * [pandoc](http://johnmacfarlane.net/pandoc)
+  * python with [jinja2](http://jinja.pocoo.org/) installed
+  * the [classicthesis](http://www.ctan.org/tex-archive/macros/latex/contrib/classicthesis/) LaTeX package
+  * a thesis to write :)
     
 ## How to
 
-    1. Write your content in markdown files (.md).
-    2. Edit the `Makefile` and run `make`.
-    3. ???
-    4. Profit!
+  1. Write your content in markdown files (.md).
+  2. Edit the `Makefile` and run `make`.
+  3. ???
+  4. Profit!
     
 The Makefile contains the following code:
 
