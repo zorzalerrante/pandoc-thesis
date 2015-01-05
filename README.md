@@ -56,4 +56,6 @@ And that's it! You are done with your thesis. At least with the preparation of t
  
 ## Note
 
-Edit the ClassicThesis.tex template according to your needs. In my case, the title page is formatted according to the requirements of my university.
+Edit the `ClassicThesis.tex` template according to your needs. In my case, the title page is formatted according to the requirements of my university. 
+You can also edit the `template_gen.py` script to change some options
+of the main LaTeX template.
